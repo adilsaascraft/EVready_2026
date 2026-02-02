@@ -1,0 +1,214 @@
+'use client'
+
+import { useState } from 'react'
+import Image from 'next/image'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2, CheckCircle2 } from 'lucide-react'
+
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import { apiRequest } from '@/lib/apiRequest'
+
+/* -------------------- ZOD SCHEMA -------------------- */
+const CoffeeSponsorSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email'),
+  mobile: z.string().optional(),
+  couponCode: z.string().min(1, 'Coupon code is required'),
+  terms: z.literal(true, {
+    message: 'You must accept terms & conditions',
+  }),
+})
+
+type CoffeeSponsorForm = z.infer<typeof CoffeeSponsorSchema>
+
+/* -------------------- PAGE -------------------- */
+export default function CoffeeSponsorPage() {
+  const [submitting, setSubmitting] = useState(false)
+  const [success, setSuccess] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<CoffeeSponsorForm>({
+    resolver: zodResolver(CoffeeSponsorSchema),
+  })
+
+  const onSubmit = async (data: CoffeeSponsorForm) => {
+    if (submitting) return
+    setSubmitting(true)
+
+    try {
+      await apiRequest({
+        endpoint: '/api/coffee-sponsor',
+        method: 'POST',
+        body: data,
+      })
+      setSuccess(true)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <div className="flex min-h-svh flex-col bg-gradient-to-b from-orange-50 to-orange-100">
+      {/* ---------------- COFFEE BANNER ---------------- */}
+      <div
+        className="
+          relative w-full overflow-hidden
+          h-[200px] md:h-[300px] lg:h-[400px]
+        "
+      >
+        <Image
+          src="https://res.cloudinary.com/dymanaa1j/image/upload/v1770018905/Coffee-Registration_kiqkmt.png"
+          alt="Indian Coffee House Banner"
+          fill
+          priority
+          sizes="100vw"
+          className="object-fit object-center"
+        />
+        <div className="absolute inset-0 bg-orange-900/30" />
+      </div>
+
+      {/* ---------------- MAIN CONTENT ---------------- */}
+      <div className="flex flex-1 items-center justify-center px-4 py-10">
+        <Card
+          className="
+            w-full
+            max-w-md sm:max-w-lg
+            shadow-xl
+            border-orange-200
+            bg-white
+          "
+        >
+          <CardContent className="p-6 sm:p-8">
+            {!success ? (
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                <div className="text-center">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-orange-600">
+                    Indian Coffee House ☕
+                  </h1>
+                  <p className="text-sm text-muted-foreground">
+                    Sponsor a coffee & support us
+                  </p>
+                </div>
+
+                {/* Name */}
+                <div className="grid gap-2">
+                  <Label>Name</Label>
+                  <Input
+                    placeholder="Enter your full name"
+                    {...register('name')}
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-red-500">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className="grid gap-2">
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email address"
+                    {...register('email')}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-500">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Mobile */}
+                <div className="grid gap-2">
+                  <Label>Mobile (optional)</Label>
+                  <Input
+                    placeholder="Enter mobile number"
+                    {...register('mobile')}
+                  />
+                </div>
+
+                {/* Coupon Code */}
+                <div className="grid gap-2">
+                  <Label>Coupon Code</Label>
+                  <Input
+                    placeholder="Enter coupon code"
+                    {...register('couponCode')}
+                  />
+                  {errors.couponCode && (
+                    <p className="text-sm text-red-500">
+                      {errors.couponCode.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Terms */}
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    onCheckedChange={(v) =>
+                      v === true && setValue('terms', true)
+                    }
+                  />
+                  <Label className="text-sm">
+                    I agree to the terms & conditions
+                  </Label>
+                </div>
+                {errors.terms && (
+                  <p className="text-sm text-red-500">
+                    {errors.terms.message}
+                  </p>
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={submitting}
+                  className="
+                    w-full
+                    bg-orange-500
+                    hover:bg-orange-600
+                  "
+                >
+                  {submitting && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Sponsor My Coffee
+                </Button>
+              </form>
+            ) : (
+              /* ---------------- SUCCESS SCREEN ---------------- */
+              <div className="flex flex-col items-center gap-4 py-10 text-center">
+                <CheckCircle2 className="h-14 w-14 text-orange-500" />
+                <h2 className="text-2xl font-bold">
+                  Thank you for sponsoring! ☕
+                </h2>
+                <p className="text-muted-foreground">
+                  Your coffee means a lot to us ❤️
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ---------------- FOOTER ---------------- */}
+      <footer className="border-t bg-white/70 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 text-center text-xs text-gray-600">
+          © {new Date().getFullYear()} Indian Coffee House.  
+          All rights reserved.
+        </div>
+      </footer>
+    </div>
+  )
+}
