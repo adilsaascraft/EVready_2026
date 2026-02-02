@@ -69,12 +69,12 @@ export default function CoffeeSponsorPage() {
         "
       >
         <Image
-          src="https://res.cloudinary.com/dymanaa1j/image/upload/v1770018905/Coffee-Registration_kiqkmt.png"
+          src="https://res.cloudinary.com/dymanaa1j/image/upload/v1770015902/ChatGPT_Image_Feb_2_2026_12_31_20_PM_1_yszltg.png"
           alt="Indian Coffee House Banner"
           fill
           priority
           sizes="100vw"
-          className="object-fit object-center"
+          className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-orange-900/30" />
       </div>
