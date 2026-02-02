@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { QRCodeCanvas } from 'qrcode.react'
+import * as htmlToImage from 'html-to-image'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useForm, Controller } from 'react-hook-form'
-import { z } from 'zod'
+import { CoffeeSponsorSchema, CoffeeSponsorForm } from '@/validations/registrationSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, CheckCircle2 } from 'lucide-react'
+import { Loader2, CheckCircle2, Download } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -15,22 +17,14 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { apiRequest } from '@/lib/apiRequest'
 
-/* -------------------- ZOD SCHEMA -------------------- */
-const CoffeeSponsorSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email('Invalid email'),
-    mobile: z.string().optional(),
-    couponCode: z.string().min(1, 'Coupon code is required'),
-})
 
-type CoffeeSponsorForm = z.infer<typeof CoffeeSponsorSchema>
 
 /* -------------------- PAGE -------------------- */
 export default function CoffeeSponsorPage() {
     const [submitting, setSubmitting] = useState(false)
     const [success, setSuccess] = useState(false)
-
-    // ✅ Checkbox state (same as SignupForm)
+    const [regNum, setRegNum] = useState<string | null>(null)
+    const [showQr, setShowQr] = useState(false)
     const [agree, setAgree] = useState(false)
     const [termsError, setTermsError] = useState<string | null>(null)
 
@@ -71,7 +65,7 @@ export default function CoffeeSponsorPage() {
         setSubmitting(true)
 
         try {
-            await apiRequest({
+            const response = await apiRequest({
                 endpoint: '/api/registers',
                 method: 'POST',
                 body: data,
@@ -80,8 +74,12 @@ export default function CoffeeSponsorPage() {
             toast.success('Registration successful ☕', {
                 description: 'Your coffee registration is complete.',
             })
-
+            setRegNum(response.register.regNum)
             setSuccess(true)
+            // ⏳ Delay QR rendering
+            setTimeout(() => {
+                setShowQr(true)
+            }, 5000)
         } catch (error: any) {
             toast.error('Registration failed', {
                 description: error.message,
@@ -90,6 +88,28 @@ export default function CoffeeSponsorPage() {
             setSubmitting(false)
         }
     }
+
+    // QR Code generating helper function
+    const downloadQrCard = async () => {
+        const node = document.getElementById('coffee-qr-card')
+        if (!node) return
+
+        try {
+            const dataUrl = await htmlToImage.toPng(node, {
+                backgroundColor: '#ffffff',
+                pixelRatio: 2, // sharper image
+            })
+
+            const link = document.createElement('a')
+            link.download = `${regNum}-coffee-pass.png`
+            link.href = dataUrl
+            link.click()
+        } catch (error) {
+            toast.error('Failed to download QR card')
+        }
+    }
+
+
 
     return (
         <div className="flex min-h-svh flex-col bg-gradient-to-b from-orange-50 to-orange-100">
@@ -127,7 +147,7 @@ export default function CoffeeSponsorPage() {
                                     control={control}
                                     render={({ field }) => (
                                         <div className="grid gap-2">
-                                            <Label>Name</Label>
+                                            <Label>Name *</Label>
                                             <Input {...field} placeholder="Enter your full name" />
                                             {errors.name && (
                                                 <p className="text-sm text-red-500">
@@ -144,7 +164,7 @@ export default function CoffeeSponsorPage() {
                                     control={control}
                                     render={({ field }) => (
                                         <div className="grid gap-2">
-                                            <Label>Email</Label>
+                                            <Label>Email *</Label>
                                             <Input
                                                 type="email"
                                                 {...field}
@@ -160,13 +180,23 @@ export default function CoffeeSponsorPage() {
                                 />
 
                                 {/* Mobile */}
+
                                 <Controller
                                     name="mobile"
                                     control={control}
                                     render={({ field }) => (
                                         <div className="grid gap-2">
-                                            <Label>Mobile (optional)</Label>
-                                            <Input {...field} placeholder="Enter mobile number" />
+                                            <Label>Mobile *</Label>
+                                            <Input
+                                                type="number"
+                                                {...field}
+                                                placeholder="Enter your mbile number"
+                                            />
+                                            {errors.mobile && (
+                                                <p className="text-sm text-red-500">
+                                                    {errors.mobile.message}
+                                                </p>
+                                            )}
                                         </div>
                                     )}
                                 />
@@ -177,7 +207,7 @@ export default function CoffeeSponsorPage() {
                                     control={control}
                                     render={({ field }) => (
                                         <div className="grid gap-2">
-                                            <Label>Coupon Code</Label>
+                                            <Label>Coupon Code *</Label>
                                             <Input {...field} placeholder="Enter coupon code" />
                                             {errors.couponCode && (
                                                 <p className="text-sm text-red-500">
@@ -244,7 +274,7 @@ export default function CoffeeSponsorPage() {
                                     Your registration has been completed successfully.
                                 </p>
 
-                                {/* Email Info Card */}
+                                {/* Email Info Card (UNCHANGED) */}
                                 <div className="w-full max-w-sm rounded-xl border border-orange-200 bg-orange-50 p-4 shadow-sm animate-slide-up">
                                     <p className="text-sm text-orange-700 font-medium">
                                         📩 Check your email!
@@ -256,7 +286,81 @@ export default function CoffeeSponsorPage() {
                                     </p>
                                 </div>
 
-                                {/* Action */}
+                                {/* ================= QR SECTION (ADDED) ================= */}
+                                {!showQr ? (
+                                    /* ⏳ QR Generating State */
+                                    <div className="mt-4 flex flex-col items-center gap-3 animate-fade-in">
+                                        <Loader2 className="h-7 w-7 animate-spin text-orange-500" />
+                                        <p className="text-sm text-gray-600">
+                                            QR Code is being generated…
+                                        </p>
+                                    </div>
+                                ) : (
+                                    /* ✅ QR CARD */
+                                    <>
+                                        <div
+                                            id="coffee-qr-card"
+                                            className="
+        mt-4 w-full max-w-sm rounded-2xl
+        border-2 border-yellow-400
+        bg-white p-5
+        shadow-lg
+        animate-slide-up
+      "
+                                        >
+                                            {/* Heading */}
+                                            <h3 className="mb-3 text-center text-sm font-bold text-yellow-600">
+                                                ☕ Coffee Event
+                                            </h3>
+
+                                            {/* QR Wrapper */}
+                                            <div className="flex justify-center">
+                                                <div className="rounded-xl border-4 border-yellow-400 bg-white p-3">
+                                                    <QRCodeCanvas
+                                                        value={regNum ?? ''}
+                                                        size={180}
+                                                        bgColor="#ffffff"
+                                                        fgColor="#000000"
+                                                        level="H"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Registration Number */}
+                                            <p className="mt-3 text-center text-xs text-gray-600">
+                                                Registration No:
+                                                <span className="ml-1 font-semibold text-gray-800">
+                                                    {regNum}
+                                                </span>
+                                            </p>
+
+                                            {/* Footer Note */}
+                                            <p className="mt-1 text-center text-[11px] font-medium text-gray-500">
+                                                Show at venue to participate
+                                            </p>
+                                        </div>
+
+                                        {/* Download Button */}
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={downloadQrCard}
+                                            className="
+        mt-3 w-full gap-2
+        border-yellow-400
+        text-yellow-700
+        hover:bg-yellow-50
+      "
+                                        >
+                                            <Download className="h-4 w-4" />
+                                            Download Entry QR
+                                        </Button>
+                                    </>
+                                )}
+
+                                {/* ================= END QR SECTION ================= */}
+
+                                {/* Action (UNCHANGED POSITION, QR IS ABOVE THIS) */}
                                 <Button
                                     onClick={handleNewRegistration}
                                     className="mt-4 w-full max-w-xs bg-orange-500 hover:bg-orange-600 transition-all duration-300 hover:scale-105"
@@ -269,6 +373,7 @@ export default function CoffeeSponsorPage() {
                                     Brewed with ❤️ by SaaScraft Studio India Pvt. Ltd
                                 </p>
                             </div>
+
 
                         )}
                     </CardContent>
