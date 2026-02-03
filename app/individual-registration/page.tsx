@@ -79,7 +79,7 @@ export default function CoffeeSponsorPage() {
             // ⏳ Delay QR rendering
             setTimeout(() => {
                 setShowQr(true)
-            }, 5000)
+            }, 10000)
         } catch (error: any) {
             toast.error('Registration failed', {
                 description: error.message,
@@ -114,14 +114,14 @@ export default function CoffeeSponsorPage() {
     return (
         <div className="flex min-h-svh flex-col bg-gradient-to-b from-orange-50 to-orange-100">
             {/* ---------------- COFFEE BANNER ---------------- */}
-            <div className="relative w-full overflow-hidden h-[200px] md:h-[280px] lg:h-[450px]">
+            <div className="relative w-full overflow-hidden h-[200px] md:h-[280px] lg:h-[400px]">
                 <Image
-                    src="https://res.cloudinary.com/dymanaa1j/image/upload/v1770021105/ChatGPT_Image_Feb_2_2026_02_00_00_PM_1_b6chc9.png"
+                    src="https://res.cloudinary.com/dymanaa1j/image/upload/v1770104367/220_1_ltzsby.png"
                     alt="Coffee Banner"
                     fill
                     priority
                     sizes="100vw"
-                    className="object-cover object-center"
+                    className="object-fit object-center"
                 />
                 <div className="absolute inset-0 bg-orange-900/30" />
             </div>
@@ -133,9 +133,11 @@ export default function CoffeeSponsorPage() {
                         {!success ? (
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                                 <div className="text-center">
-                                    <h1 className="text-2xl sm:text-3xl font-bold text-orange-600">
-                                        Coffee Registration Form ☕
-                                    </h1>
+                                    <h1 className="text-2xl sm:text-2xl font-bold text-amber-800 hover:text-amber-900"
+                                    >India International Coffee Festival (IICF) 2026 ☕</h1>
+                                    <h2 className="text-sm sm:text-xl font-bold text-gray-600">
+                                        Registration Form
+                                    </h2>
                                     <p className="text-sm text-muted-foreground">
                                         Please fill the form to register
                                     </p>
@@ -229,7 +231,7 @@ export default function CoffeeSponsorPage() {
                                         I agree to{' '}
                                         <Link
                                             href="/individual-registration/term-and-condition"
-                                            className="text-orange-600 font-medium hover:underline"
+                                            className="text-amber-800 hover:text-amber-900 font-medium hover:underline"
                                         >
                                             Terms & Conditions
                                         </Link>
@@ -243,7 +245,7 @@ export default function CoffeeSponsorPage() {
                                 <Button
                                     type="submit"
                                     disabled={submitting}
-                                    className="w-full bg-orange-500 hover:bg-orange-600"
+                                    className="w-full bg-amber-800 hover:bg-amber-900"
                                 >
                                     {submitting && (
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -259,18 +261,18 @@ export default function CoffeeSponsorPage() {
 
                                 {/* Animated check */}
                                 <div className="relative">
-                                    <span className="absolute inset-0 rounded-full bg-orange-300 blur-xl opacity-40 animate-ping" />
-                                    <CheckCircle2 className="relative h-20 w-20 text-orange-500 animate-bounce" />
+                                    <span className="absolute inset-0 rounded-full bg-amber-800 hover:bg-amber-900 blur-xl opacity-40 animate-ping" />
+                                    <CheckCircle2 className="relative h-20 w-20 text-amber-800 hover:text-amber-900 animate-bounce" />
                                 </div>
 
                                 {/* Title */}
-                                <h2 className="text-3xl font-extrabold text-orange-600 animate-fade-in">
+                                <h2 className="text-3xl font-extrabold text-amber-800 hover:text-amber-900 animate-fade-in">
                                     Registration Successful! 🎉
                                 </h2>
 
                                 {/* Message */}
                                 <p className="max-w-sm text-sm text-gray-600 animate-fade-in delay-100">
-                                    Thank you for registering for Coffee ☕
+                                    Thank you for registering for <span className='text-amber-800 hover:text-amber-900' >India International Coffee Festival (IICF) 2026</span> ☕
                                     Your registration has been completed successfully.
                                 </p>
 
@@ -298,47 +300,57 @@ export default function CoffeeSponsorPage() {
                                 ) : (
                                     /* ✅ QR CARD */
                                     <>
-                                        <div
-                                            id="coffee-qr-card"
-                                            className="
-        mt-4 w-full max-w-sm rounded-2xl
-        border-2 border-yellow-400
-        bg-white p-5
-        shadow-lg
-        animate-slide-up
-      "
-                                        >
-                                            {/* Heading */}
-                                            <h3 className="mb-3 text-center text-sm font-bold text-yellow-600">
-                                                ☕ Coffee Event
-                                            </h3>
+                                        <div className="p-6 bg-transparent">
+  <div
+    id="coffee-qr-card"
+    className="
+      w-[320px]
+      rounded-3xl
+      border-2 border-amber-800
+      bg-white
+      shadow-xl
+      overflow-hidden
+    "
+  >
+    {/* HEADER STRIP */}
+    <div className="bg-amber-800 px-4 py-3 text-center">
+      <h3 className="text-sm font-bold text-white leading-tight">
+        India International Coffee Festival
+      </h3>
+      <p className="text-[11px] text-amber-100">
+        IICF 2026
+      </p>
+    </div>
 
-                                            {/* QR Wrapper */}
-                                            <div className="flex justify-center">
-                                                <div className="rounded-xl border-4 border-yellow-400 bg-white p-3">
-                                                    <QRCodeCanvas
-                                                        value={regNum ?? ''}
-                                                        size={180}
-                                                        bgColor="#ffffff"
-                                                        fgColor="#000000"
-                                                        level="H"
-                                                    />
-                                                </div>
-                                            </div>
+    {/* BODY */}
+    <div className="px-5 py-4 text-center">
+      <p className="text-sm font-semibold text-amber-800 mb-4">
+        🎟️ Your Free Entry Pass
+      </p>
 
-                                            {/* Registration Number */}
-                                            <p className="mt-3 text-center text-xs text-gray-600">
-                                                Registration No:
-                                                <span className="ml-1 font-semibold text-gray-800">
-                                                    {regNum}
-                                                </span>
-                                            </p>
+      {/* QR */}
+      <div className="flex justify-center mb-4">
+        <div className="rounded-2xl border-4 border-amber-700 bg-white p-3 shadow-md">
+          <QRCodeCanvas
+            value={regNum ?? ""}
+            size={170}
+            bgColor="#ffffff"
+            fgColor="#000000"
+            level="H"
+          />
+        </div>
+      </div>
+    </div>
 
-                                            {/* Footer Note */}
-                                            <p className="mt-1 text-center text-[11px] font-medium text-gray-500">
-                                                Show at venue to participate
-                                            </p>
-                                        </div>
+    {/* FOOTER */}
+    <div className="border-t bg-amber-50 px-4 py-2 text-center">
+      <p className="text-[11px] font-medium text-amber-800">
+        Show at venue to participate
+      </p>
+    </div>
+  </div>
+</div>
+
 
                                         {/* Download Button */}
                                         <Button
@@ -347,9 +359,9 @@ export default function CoffeeSponsorPage() {
                                             onClick={downloadQrCard}
                                             className="
         mt-3 w-full gap-2
-        border-yellow-400
-        text-yellow-700
-        hover:bg-yellow-50
+        border-amber-800
+        text-amber-700
+        hover:bg-amber-50
       "
                                         >
                                             <Download className="h-4 w-4" />
@@ -363,7 +375,7 @@ export default function CoffeeSponsorPage() {
                                 {/* Action (UNCHANGED POSITION, QR IS ABOVE THIS) */}
                                 <Button
                                     onClick={handleNewRegistration}
-                                    className="mt-4 w-full max-w-xs bg-orange-500 hover:bg-orange-600 transition-all duration-300 hover:scale-105"
+                                    className="mt-4 w-full max-w-xs bg-amber-800 hover:bg-amber-900 transition-all duration-300 hover:scale-105"
                                 >
                                     New Registration
                                 </Button>

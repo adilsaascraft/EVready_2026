@@ -76,7 +76,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
     <div className="space-y-6">
 
       <h1 className="text-2xl font-semibold text-gray-900">
-        Coffee Event Registration – Terms & Conditions
+        IICF 2026 Registration – Terms & Conditions
       </h1>
 
       <p className="text-sm text-gray-600">
@@ -169,7 +169,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
       <div className="pt-8 flex justify-center">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button className="bg-orange-600 hover:bg-orange-700 px-6">
+            <Button className="bg-amber-800 hover:bg-amber-900 px-6">
               I Accept Terms & Conditions
             </Button>
           </AlertDialogTrigger>
@@ -190,7 +190,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
-              className="bg-orange-600 hover:bg-orange-700"
+              className="bg-amber-800 hover:bg-amber-900"
                 onClick={() => router.back()}
               >
                 Confirm
