@@ -15,7 +15,6 @@ export async function fetchClient(
   const response = await fetch(url, {
     ...options,
     headers,
-    credentials: 'include', // remove this too if you don’t need cookies
   })
 
   if (!response.ok) {
