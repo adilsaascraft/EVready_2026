@@ -7,9 +7,7 @@ export const CoffeeSponsorSchema = z.object({
         .min(1, 'Name is required'),
 
     email: z
-        .string()
-        .email('Please enter a valid email address'),
-
+        .string().optional(),
     mobile: z
         .string()
         .min(10, 'Mobile number must be at least 10 digits')
