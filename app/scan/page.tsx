@@ -188,17 +188,20 @@ export default function QrScanner() {
       {/* ---------------- RESULT OVERLAY ---------------- */}
       {result && (
         <div
-          className={`mx-auto max-w-sm rounded-lg p-4 text-white space-y-1
+          className={`mx-auto max-w-sm rounded-lg p-4 text-white space-y-2
       ${result.type === 'success' ? 'bg-green-600' : 'bg-red-600'}
     `}
         >
           <div className="flex items-center gap-2">
             {result.type === 'success' ? <CheckCircle2 /> : <XCircle />}
-            <span className="font-semibold">
-              {result.type === 'success' ? 'Scan Successful' : 'Scan Failed'}
+
+            {/* Main Message */}
+            <span className="font-bold text-base">
+              {result.message}
             </span>
           </div>
 
+          {/* Show details only if success */}
           {result.type === 'success' && (
             <>
               <p className="text-sm">
@@ -209,12 +212,9 @@ export default function QrScanner() {
               </p>
             </>
           )}
-
-          <p className="text-sm font-semibold mt-1">
-            {result.message}
-          </p>
         </div>
       )}
+
 
 
       {/* ---------------- SCANNER ---------------- */}
