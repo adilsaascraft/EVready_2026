@@ -400,6 +400,11 @@ export default function EVreadyRegistrationPage() {
                     </CardContent>
                 </Card>
             </div>
+            {/* ---------------- FOOTER ---------------- */}
+            <footer className="border-t bg-white/70 backdrop-blur">
+                <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
+                    © {new Date().getFullYear()} All Rights Reserved. Powered by SaaScraft Studio (India) Pvt. Ltd. </div>
+            </footer>
         </div>
     )
 }

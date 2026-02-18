@@ -141,10 +141,10 @@ export default function QrScanner() {
       {/* ---------------- BANNER ---------------- */}
       <div className="relative w-full overflow-hidden">
         <Image
-          src="https://res.cloudinary.com/dymanaa1j/image/upload/v1770199028/IICF_GFormBanner_agon5d.jpg"
+          src="https://res.cloudinary.com/dymanaa1j/image/upload/v1771408911/ev_1_u7uayq.png"
           alt="Coffee Banner"
-          width={1700}
-          height={300}
+          width={1536}
+          height={453}
           priority
           sizes="100vw"
           className="w-full h-auto object-contain"
