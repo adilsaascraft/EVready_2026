@@ -122,9 +122,17 @@ export default function EVreadyRegistrationPage() {
         const node = document.getElementById('evready-qr-card')
         if (!node) return
 
+        const width = node.offsetWidth
+        const height = node.offsetHeight
+
         const dataUrl = await htmlToImage.toPng(node, {
             backgroundColor: '#ffffff',
-            pixelRatio: 2,
+            pixelRatio: 3, // better clarity
+            width: width,
+            height: height,
+            style: {
+                margin: '0',
+            },
         })
 
         const link = document.createElement('a')
@@ -210,8 +218,19 @@ export default function EVreadyRegistrationPage() {
                                     render={({ field }) => (
                                         <div className="grid gap-2">
                                             <Label>Mobile *</Label>
-                                            <Input type="number" {...field}
-                                                placeholder='enter mobile number' />
+
+                                            <Input
+                                                {...field}
+                                                type="tel"
+                                                inputMode="numeric"
+                                                maxLength={10}
+                                                placeholder="Enter 10 digit mobile number"
+                                                onChange={(e) => {
+                                                    const value = e.target.value.replace(/\D/g, '') // remove non-digits
+                                                    field.onChange(value)
+                                                }}
+                                            />
+
                                             {errors.mobile && (
                                                 <p className="text-sm text-red-500">
                                                     {errors.mobile.message}
@@ -220,6 +239,7 @@ export default function EVreadyRegistrationPage() {
                                         </div>
                                     )}
                                 />
+
 
                                 {/* Coupon Dropdown */}
                                 <Controller

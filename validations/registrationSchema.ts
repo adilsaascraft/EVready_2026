@@ -16,7 +16,7 @@ export const CoffeeSponsorSchema = z.object({
   mobile: z
     .string()
     .min(10, 'Mobile number must be at least 10 digits')
-    .max(15, 'Mobile number must not exceed 15 digits'),
+    .max(10, 'Mobile number must not exceed 10 digits'),
 
   couponId: z
     .string()
