@@ -1,6 +1,6 @@
 'use client'
-
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
+import { useState } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
 import * as htmlToImage from 'html-to-image'
 import Image from 'next/image'
@@ -38,9 +38,6 @@ export default function EVreadyRegistrationPage() {
     const [agree, setAgree] = useState(false)
     const [termsError, setTermsError] = useState<string | null>(null)
 
-    const [coupons, setCoupons] = useState<any[]>([])
-    const [loadingCoupons, setLoadingCoupons] = useState(true)
-
     const {
         handleSubmit,
         control,
@@ -56,27 +53,27 @@ export default function EVreadyRegistrationPage() {
         },
     })
 
-    /* ---------------- Fetch Coupons (RAW FETCH) ---------------- */
-    useEffect(() => {
-        const fetchCoupons = async () => {
-            try {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/coupons`
-                )
+    /* -------------------- SWR Fetcher -------------------- */
+    const fetcher = async (url: string) => {
+        const res = await fetch(url)
+        if (!res.ok) throw new Error('Failed to fetch')
+        return res.json()
+    }
 
-                const json = await res.json()
+    /* -------------------- Fetch Coupons -------------------- */
+    const { data, error, isLoading } = useSWR(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/coupons`,
+        fetcher
+    )
 
-                // ✅ FIX: correct key
-                setCoupons(json.coupons ?? [])
-            } catch (err) {
-                toast.error('Failed to load coupons')
-            } finally {
-                setLoadingCoupons(false)
-            }
-        }
+    // Coupons array
+    const coupons = data?.coupons ?? []
 
-        fetchCoupons()
-    }, [])
+    // Show toast if error occurs
+    if (error) {
+        toast.error('Failed to load options')
+    }
+
 
 
     /* ---------------- Reset ---------------- */
@@ -251,19 +248,19 @@ export default function EVreadyRegistrationPage() {
                                             <Select
                                                 onValueChange={field.onChange}
                                                 value={field.value}
-                                                disabled={loadingCoupons}
+                                                disabled={isLoading}
                                             >
                                                 <SelectTrigger className='w-full p-3'>
                                                     <SelectValue
                                                         placeholder={
-                                                            loadingCoupons
+                                                            isLoading
                                                                 ? 'Loading options...'
                                                                 : 'Select option'
                                                         }
                                                     />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {coupons.map((coupon) => (
+                                                    {coupons.map((coupon: any) => (
                                                         <SelectItem
                                                             key={coupon._id}
                                                             value={coupon._id}
