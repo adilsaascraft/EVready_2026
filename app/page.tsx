@@ -1,6 +1,6 @@
 'use client'
 import useSWR from 'swr'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
 import * as htmlToImage from 'html-to-image'
 import Image from 'next/image'
@@ -9,7 +9,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, CheckCircle2, Download, Car } from 'lucide-react'
 import { toast } from 'sonner'
-
+import { useFormDraftStore } from '@/stores/useFormDraftStore'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,7 +37,9 @@ export default function EVreadyRegistrationPage() {
     const [showQr, setShowQr] = useState(false)
     const [agree, setAgree] = useState(false)
     const [termsError, setTermsError] = useState<string | null>(null)
-
+    const DRAFT_KEY = 'add-surya-form'
+    const { drafts, setDraft, clearDraft } = useFormDraftStore()
+    const webinarDraft = drafts[DRAFT_KEY]
     const {
         handleSubmit,
         control,
@@ -45,7 +47,8 @@ export default function EVreadyRegistrationPage() {
         formState: { errors },
     } = useForm<CoffeeSponsorForm>({
         resolver: zodResolver(CoffeeSponsorSchema),
-        defaultValues: {
+        defaultValues:
+        webinarDraft ||{
             name: '',
             email: '',
             mobile: '',
@@ -73,6 +76,8 @@ export default function EVreadyRegistrationPage() {
     if (error) {
         toast.error('Failed to load options')
     }
+
+
 
 
 
@@ -105,7 +110,7 @@ export default function EVreadyRegistrationPage() {
             toast.success('Registration successful ⚡')
             setRegNum(response.register.regNum)
             setSuccess(true)
-
+            clearDraft(DRAFT_KEY)
             setTimeout(() => setShowQr(true), 1500)
         } catch (error: any) {
             toast.error(error.message)
