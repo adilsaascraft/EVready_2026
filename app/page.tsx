@@ -63,8 +63,11 @@ export default function EVreadyRegistrationPage() {
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/api/coupons`
                 )
+
                 const json = await res.json()
-                setCoupons(json.data ?? [])
+
+                // ✅ FIX: correct key
+                setCoupons(json.coupons ?? [])
             } catch (err) {
                 toast.error('Failed to load coupons')
             } finally {
@@ -74,6 +77,7 @@ export default function EVreadyRegistrationPage() {
 
         fetchCoupons()
     }, [])
+
 
     /* ---------------- Reset ---------------- */
     const handleNewRegistration = () => {
