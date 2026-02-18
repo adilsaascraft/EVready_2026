@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Coffee Registration",
-  description: "Coffee Registration for individual",
+  title: "EVready 2026 Registration",
+  description: "Individual Registrations for EVready 2026 Expo Karnataka Bengaluru",
 };
 
 export default function RootLayout({

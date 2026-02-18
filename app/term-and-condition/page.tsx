@@ -76,12 +76,14 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
     <div className="space-y-6">
 
       <h1 className="text-2xl font-semibold text-gray-900">
-        IICF 2026 Registration – Terms & Conditions
+        EVready 2026 – Karnataka’s Largest EV Expo <br />
+        Registration – Terms & Conditions
       </h1>
 
       <p className="text-sm text-gray-600">
-        By registering for the Coffee Event, you agree to the following
-        Terms & Conditions. Please read them carefully before proceeding.
+        By registering for EVready 2026, Karnataka’s Largest EV Expo, you agree
+        to the following Terms & Conditions. Please read them carefully before
+        proceeding.
       </p>
 
       <section>
@@ -89,7 +91,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
           1. Event Registration
         </h2>
         <p className="text-sm text-gray-600">
-          Registration for the Coffee Event is subject to availability and
+          Registration for EVready 2026 is subject to availability and
           successful submission of the registration form. Submission does not
           guarantee entry unless confirmed via email.
         </p>
@@ -101,7 +103,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
         </h2>
         <p className="text-sm text-gray-600">
           Coupon codes, if provided, must be entered correctly at the time of
-          registration. Each coupon code is valid for a limited use and may
+          registration. Each coupon code is valid for limited use and may
           expire without prior notice. Misuse or unauthorized sharing of
           coupon codes may result in cancellation of registration.
         </p>
@@ -113,9 +115,9 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
         </h2>
         <p className="text-sm text-gray-600">
           You are responsible for providing a valid email address and mobile
-          number. All event-related communication, including registration
-          confirmation, registration number, and QR code, will be sent to the
-          registered email address.
+          number. All EVready 2026 related communication, including
+          registration confirmation, registration number, and QR code, will be
+          sent to the registered email address.
         </p>
       </section>
 
@@ -126,7 +128,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
         <p className="text-sm text-gray-600">
           Upon successful registration, you will receive a confirmation email
           containing your unique registration number and QR code. This QR code
-          may be required for event entry and verification.
+          will be required for event entry and verification at the venue.
         </p>
       </section>
 
@@ -136,9 +138,10 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
         </h2>
         <p className="text-sm text-gray-600">
           Personal information collected during registration will be used
-          solely for event management, communication, and verification
-          purposes. Your data will not be shared with third parties without
-          consent, except where required by law.
+          solely for event management, communication, verification, and
+          analytics purposes related to EVready 2026. Your data will not be
+          shared with third parties without consent, except where required by
+          law.
         </p>
       </section>
 
@@ -148,9 +151,9 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
         </h2>
         <p className="text-sm text-gray-600">
           The event organizers shall not be liable for any loss, damage, or
-          inconvenience arising from participation in the event, including
-          technical issues, communication delays, or cancellation beyond
-          reasonable control.
+          inconvenience arising from participation in EVready 2026, including
+          technical issues, communication delays, schedule changes, or
+          cancellation beyond reasonable control.
         </p>
       </section>
 
@@ -169,7 +172,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
       <div className="pt-8 flex justify-center">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button className="bg-amber-800 hover:bg-amber-900 px-6">
+            <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
               I Accept Terms & Conditions
             </Button>
           </AlertDialogTrigger>
@@ -181,7 +184,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
               </AlertDialogTitle>
               <AlertDialogDescription>
                 By confirming, you acknowledge that you have read and agree to
-                the Coffee Event Registration Terms & Conditions.
+                the EVready 2026 Registration Terms & Conditions.
               </AlertDialogDescription>
             </AlertDialogHeader>
 
@@ -190,7 +193,7 @@ function TermsContent({ router }: { router: ReturnType<typeof useRouter> }) {
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
-              className="bg-amber-800 hover:bg-amber-900"
+                className="bg-green-600 hover:bg-green-700 text-white"
                 onClick={() => router.back()}
               >
                 Confirm

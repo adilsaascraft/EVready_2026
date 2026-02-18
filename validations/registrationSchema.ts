@@ -1,22 +1,26 @@
-import z from "zod";
+import z from 'zod'
 
 /* -------------------- ZOD SCHEMA -------------------- */
 export const CoffeeSponsorSchema = z.object({
-    name: z
-        .string()
-        .min(1, 'Name is required'),
+  name: z
+    .string()
+    .min(1, 'Name is required'),
 
-    email: z
-        .string().optional(),
-    mobile: z
-        .string()
-        .min(10, 'Mobile number must be at least 10 digits')
-        .max(15, 'Mobile number must not exceed 15 digits'),
+ email: z
+  .string()
+  .min(1, "Email is required")
+  .trim()
+  .email("Please enter a valid email address"),
 
-    couponCode: z
-        .string()
-        .min(1, 'Coupon code is required'),
 
+  mobile: z
+    .string()
+    .min(10, 'Mobile number must be at least 10 digits')
+    .max(15, 'Mobile number must not exceed 15 digits'),
+
+  couponId: z
+    .string()
+    .min(1, 'Coupon is required'),
 })
 
 export type CoffeeSponsorForm = z.infer<typeof CoffeeSponsorSchema>
