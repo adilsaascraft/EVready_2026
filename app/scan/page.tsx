@@ -19,9 +19,18 @@ const DAY_API: Record<ScanDay, string> = {
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 type ScanResult =
-  | { type: 'success'; message: string }
-  | { type: 'error'; message: string }
+  | {
+    type: 'success'
+    message: string
+    name: string
+    regNum: string
+  }
+  | {
+    type: 'error'
+    message: string
+  }
   | null
+
 
 export default function QrScanner() {
   const scannerRef = useRef<Html5Qrcode | null>(null)
@@ -84,7 +93,7 @@ export default function QrScanner() {
           await markDelivered(decodedText)
         },
 
-        () => {},
+        () => { },
       )
 
       setIsScanning(true)
@@ -116,7 +125,13 @@ export default function QrScanner() {
       playBeep('success')
       navigator.vibrate?.(120)
 
-      setResult({ type: 'success', message: data.message })
+      setResult({
+        type: 'success',
+        message: data.message,
+        name: data.data.name,
+        regNum: data.data.regNum,
+      })
+
       mutate()
     } catch (err: any) {
       playBeep('error')
@@ -132,7 +147,7 @@ export default function QrScanner() {
   // Cleanup
   useEffect(() => {
     return () => {
-      scannerRef.current?.stop().catch(() => {})
+      scannerRef.current?.stop().catch(() => { })
     }
   }, [])
 
@@ -173,14 +188,34 @@ export default function QrScanner() {
       {/* ---------------- RESULT OVERLAY ---------------- */}
       {result && (
         <div
-          className={`mx-auto max-w-sm rounded-lg p-3 flex items-center gap-2 text-white
-            ${result.type === 'success' ? 'bg-green-600' : 'bg-red-600'}
-          `}
+          className={`mx-auto max-w-sm rounded-lg p-4 text-white space-y-1
+      ${result.type === 'success' ? 'bg-green-600' : 'bg-red-600'}
+    `}
         >
-          {result.type === 'success' ? <CheckCircle2 /> : <XCircle />}
-          <span className="font-semibold">{result.message}</span>
+          <div className="flex items-center gap-2">
+            {result.type === 'success' ? <CheckCircle2 /> : <XCircle />}
+            <span className="font-semibold">
+              {result.type === 'success' ? 'Scan Successful' : 'Scan Failed'}
+            </span>
+          </div>
+
+          {result.type === 'success' && (
+            <>
+              <p className="text-sm">
+                <span className="font-medium">Name:</span> {result.name}
+              </p>
+              <p className="text-sm">
+                <span className="font-medium">Reg No:</span> {result.regNum}
+              </p>
+            </>
+          )}
+
+          <p className="text-sm font-semibold mt-1">
+            {result.message}
+          </p>
         </div>
       )}
+
 
       {/* ---------------- SCANNER ---------------- */}
       <div className="mx-auto w-full max-w-sm">
