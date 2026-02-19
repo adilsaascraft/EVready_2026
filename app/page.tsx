@@ -148,7 +148,7 @@ export default function EVreadyRegistrationPage() {
             {/* ---------------- BANNER ---------------- */}
             <div className="relative w-full">
                 <Image
-                    src="https://res.cloudinary.com/dymanaa1j/image/upload/v1771408911/ev_1_u7uayq.png"
+                    src="https://res.cloudinary.com/dymanaa1j/image/upload/v1771464283/Registration_Web_Banner_Image_cnctgq.jpg"
                     alt="EVready 2026"
                     width={1536}
                     height={453}
