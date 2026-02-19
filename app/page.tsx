@@ -173,7 +173,7 @@ useEffect(() => {
                     priority
                     className="w-full h-auto object-cover"
                 />
-                <div className="absolute inset-0 bg-green-900/40" />
+                
             </div>
 
             {/* ---------------- CONTENT ---------------- */}
