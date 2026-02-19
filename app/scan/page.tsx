@@ -7,6 +7,7 @@ import { Html5Qrcode } from 'html5-qrcode'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { CheckCircle2, XCircle } from 'lucide-react'
+import { toast } from 'sonner'
 
 type ScanDay = 'day1' | 'day2' | 'day3'
 
@@ -69,41 +70,56 @@ export default function QrScanner() {
     osc.stop(ctx.currentTime + 0.15)
   }
 
+  const stopScanner = async () => {
+  if (scannerRef.current) {
+    try {
+      await scannerRef.current.stop()
+      await scannerRef.current.clear()
+    } catch {
+      // ignore errors
+    } finally {
+      scannerRef.current = null
+      setIsScanning(false)
+    }
+  }
+}
+
+
   // ==========================
   // Start Scan (SINGLE)
   // ==========================
   const startScan = async () => {
-    if (!activeDay) return
-
-    setResult(null)
-
-    const scanner = new Html5Qrcode('qr-reader')
-    scannerRef.current = scanner
-
-    try {
-      await scanner.start(
-        { facingMode: 'environment' },
-        { fps: 10, qrbox: { width: 260, height: 260 } },
-
-        async (decodedText) => {
-          // STOP IMMEDIATELY (single scan)
-          await scanner.stop()
-          setIsScanning(false)
-
-          await markDelivered(decodedText)
-        },
-
-        () => { },
-      )
-
-      setIsScanning(true)
-    } catch {
-      setResult({
-        type: 'error',
-        message: 'Camera permission denied',
-      })
-    }
+  if (!activeDay) {
+    toast.error('Please select a day before scanning')
+    return
   }
+
+  // If already scanning, prevent duplicate
+  if (isScanning) return
+
+  setResult(null)
+
+  const scanner = new Html5Qrcode('qr-reader')
+  scannerRef.current = scanner
+
+  try {
+    await scanner.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 260, height: 260 } },
+
+      async (decodedText) => {
+        await stopScanner()
+        await markDelivered(decodedText)
+      },
+
+      () => {},
+    )
+
+    setIsScanning(true)
+  } catch {
+    toast.error('Camera permission denied')
+  }
+}
 
   // ==========================
   // API Call
@@ -144,12 +160,25 @@ export default function QrScanner() {
     }
   }
 
-  // Cleanup
   useEffect(() => {
-    return () => {
-      scannerRef.current?.stop().catch(() => { })
-    }
-  }, [])
+  if (!activeDay) return
+
+  // When day changes → stop previous scanner
+  stopScanner()
+
+  // Clear previous result
+  setResult(null)
+
+}, [activeDay])
+
+
+  // Cleanup
+ useEffect(() => {
+  return () => {
+    stopScanner()
+  }
+}, [])
+
 
   return (
     <div className="space-y-6">
