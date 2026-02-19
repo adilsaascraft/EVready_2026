@@ -5,7 +5,7 @@ import { QRCodeCanvas } from 'qrcode.react'
 import * as htmlToImage from 'html-to-image'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, CheckCircle2, Download, Car } from 'lucide-react'
 import { toast } from 'sonner'
@@ -29,6 +29,7 @@ import {
     CoffeeSponsorForm,
 } from '@/validations/registrationSchema'
 
+
 /* -------------------- PAGE -------------------- */
 export default function EVreadyRegistrationPage() {
     const [submitting, setSubmitting] = useState(false)
@@ -37,24 +38,40 @@ export default function EVreadyRegistrationPage() {
     const [showQr, setShowQr] = useState(false)
     const [agree, setAgree] = useState(false)
     const [termsError, setTermsError] = useState<string | null>(null)
-    const DRAFT_KEY = 'add-surya-form'
-    const { drafts, setDraft, clearDraft } = useFormDraftStore()
-    const webinarDraft = drafts[DRAFT_KEY]
-    const {
-        handleSubmit,
-        control,
-        reset,
-        formState: { errors },
-    } = useForm<CoffeeSponsorForm>({
-        resolver: zodResolver(CoffeeSponsorSchema),
-        defaultValues:
-        webinarDraft ||{
-            name: '',
-            email: '',
-            mobile: '',
-            couponId: '',
-        },
-    })
+    const DRAFT_KEY = 'add-ev-form'
+   const webinarDraft = useFormDraftStore(
+  (state) => state.drafts[DRAFT_KEY]
+)
+
+const setDraft = useFormDraftStore((state) => state.setDraft)
+const clearDraft = useFormDraftStore((state) => state.clearDraft)
+
+const {
+  handleSubmit,
+  control,
+  reset,
+  formState: { errors },
+} = useForm<CoffeeSponsorForm>({
+  resolver: zodResolver(CoffeeSponsorSchema),
+  defaultValues: webinarDraft || {
+    name: '',
+    email: '',
+    mobile: '',
+    couponId: '',
+  },
+})
+
+// 🔥 Use useWatch instead of watch subscription
+const watchedValues = useWatch({ control })
+
+useEffect(() => {
+  if (!success) {
+    setDraft(DRAFT_KEY, watchedValues)
+  }
+}, [watchedValues, success, setDraft])
+
+
+
 
     /* -------------------- SWR Fetcher -------------------- */
     const fetcher = async (url: string) => {
@@ -84,6 +101,7 @@ export default function EVreadyRegistrationPage() {
     /* ---------------- Reset ---------------- */
     const handleNewRegistration = () => {
         reset()
+        clearDraft(DRAFT_KEY)
         setAgree(false)
         setTermsError(null)
         setSuccess(false)
@@ -159,7 +177,11 @@ export default function EVreadyRegistrationPage() {
             </div>
 
             {/* ---------------- CONTENT ---------------- */}
-            <div className="flex flex-1 items-center justify-center px-4 py-10">
+            <div className="relative flex flex-1 items-center justify-center px-4 py-10">
+
+  {/* Form Container */}
+  <div className="relative z-10 w-full flex justify-center">
+
                 <Card className="w-full max-w-md shadow-xl border-green-200">
                     <CardContent className="p-6 space-y-5">
                         {!success ? (
@@ -402,6 +424,8 @@ export default function EVreadyRegistrationPage() {
                     </CardContent>
                 </Card>
             </div>
+              </div>
+
             {/* ---------------- FOOTER ---------------- */}
             <footer className="border-t bg-white/70 backdrop-blur">
                 <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
