@@ -20,7 +20,7 @@ export const CoffeeSponsorSchema = z.object({
 
   couponId: z
     .string()
-    .min(1, 'Coupon is required'),
+    .min(1, 'select one option'),
 })
 
 export type CoffeeSponsorForm = z.infer<typeof CoffeeSponsorSchema>
