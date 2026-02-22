@@ -774,7 +774,7 @@ export default function LuckyDraw() {
                       color: ['#00ff00', '#adff2f', '#00ff00']
                     }}
                     transition={{ duration: 1, repeat: Infinity }}
-                    className="text-6xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent"
+                    className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent"
                   >
                     {countdown}s
                   </motion.span>
@@ -802,8 +802,6 @@ export default function LuckyDraw() {
               transition={{ duration: 2, repeat: Infinity }}
               className="text-center mb-8"
             >
-             <h2 className="text-white text-lg font-semibold"> Daily EV 2 Wheeler Lucky Draw Winner</h2>
-              <span className="text-white text-lg font-semibold">Searching the Lucky Winner</span>
               <motion.div 
                 className="h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full mx-auto mt-2"
                 style={{ width: `${(spinSpeed / SPIN_SPEED) * 100}%` }}
@@ -835,11 +833,11 @@ export default function LuckyDraw() {
 
               {/* Main spin card */}
               <Card className="
-  w-[320px]
+  w-[360px]
   sm:w-[500px]
-  md:w-[700px]
-  lg:w-[900px]
-  xl:w-[1000px]
+  md:w-[900px]
+  lg:w-[1200px]
+  xl:w-[1400px]
   mx-auto
   relative
   bg-black/40
@@ -918,7 +916,7 @@ export default function LuckyDraw() {
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.1 }}
                     >
-                      <h2 className="text-7xl md:text-8xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent">
+                      <h2 className="text-5xl md:text-8xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent">
                         {currentParticipant?.name}
                       </h2>
                     </motion.div>
