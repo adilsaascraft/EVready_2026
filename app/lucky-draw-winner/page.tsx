@@ -1065,6 +1065,19 @@ export default function LuckyDraw() {
 
               {/* Winner text */}
               <div className="text-center space-y-4">
+                <motion.h1 
+                  animate={{ 
+                    textShadow: [
+  '0 0 8px rgba(255,120,0,0.7)',
+  '0 0 25px rgba(255,100,0,1)',
+  '0 0 8px rgba(255,120,0,0.7)'
+]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400 bg-clip-text text-transparent"
+                >
+                  EVready Expo 2026 Karnataka
+                </motion.h1>
                 <motion.h2 
                   animate={{ 
                     textShadow: [
@@ -1074,9 +1087,9 @@ export default function LuckyDraw() {
                     ]
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent"
+                  className="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent"
                 >
-                  GRAND EV 2 WHEELER WINNER
+                  Lucky Draw EV 2 Wheeler Winner
                 </motion.h2>
                 
                 <motion.div
