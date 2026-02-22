@@ -19,7 +19,7 @@ type Participant = {
 
 const TOTAL_DURATION = 120000 // 120 seconds
 const COUNTDOWN_START = 90000 // Start countdown at 90 seconds (30 seconds left)
-const SPIN_SPEED = 5 // Initial spin speed
+const SPIN_SPEED = 10 // Initial spin speed
 
 export default function LuckyDraw() {
   // Authentication state
