@@ -1,5 +1,5 @@
 'use client'
-
+import Image from 'next/image'
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import Papa from 'papaparse'
 import confetti from 'canvas-confetti'
@@ -19,7 +19,7 @@ type Participant = {
 
 const TOTAL_DURATION = 120000 // 120 seconds
 const COUNTDOWN_START = 90000 // Start countdown at 90 seconds (30 seconds left)
-const SPIN_SPEED = 10 // Initial spin speed
+const SPIN_SPEED = 5 // Initial spin speed
 
 export default function LuckyDraw() {
   // Authentication state
@@ -421,10 +421,27 @@ export default function LuckyDraw() {
   // Current participant being displayed
   const currentParticipant = participants[currentIndex]
 
+  const Banner = () => (
+  <div className="relative w-full overflow-hidden">
+    <Image
+      src="https://res.cloudinary.com/dymanaa1j/image/upload/v1771464283/Registration_Web_Banner_Image_cnctgq.jpg"
+      alt="EV Banner"
+      width={1536}
+      height={453}
+      priority
+      sizes="100vw"
+      className="w-full h-auto object-cover"
+    />
+    <div className="absolute inset-0 bg-black/40" />
+  </div>
+)
+
   // Login screen - Green theme
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
+      <>
+      <Banner />
+     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -482,13 +499,22 @@ export default function LuckyDraw() {
           </Card>
         </motion.div>
       </div>
+      {/* ---------------- FOOTER ---------------- */}
+      <footer className="border-t bg-green-100 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} All Rights Reserved. Powered by SaaScraft Studio (India) Pvt. Ltd.
+        </div>
+      </footer>
+      </>
     )
   }
 
   // Upload screen - Green theme
   if (showUploadScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
+       <>
+      <Banner />
+     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
         {/* Logout button */}
         <Button
           onClick={handleLogout}
@@ -559,13 +585,22 @@ export default function LuckyDraw() {
           </Card>
         </motion.div>
       </div>
+      {/* ---------------- FOOTER ---------------- */}
+      <footer className="border-t bg-green-100 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} All Rights Reserved. Powered by SaaScraft Studio (India) Pvt. Ltd.
+        </div>
+      </footer>
+      </>
     )
   }
 
   // Ready to draw screen (after CSV upload) - Green theme
   if (!isRunning && !winner && participants.length > 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
+      <>
+      <Banner />
+     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
         {/* Logout button */}
         <Button
           onClick={handleLogout}
@@ -653,13 +688,22 @@ export default function LuckyDraw() {
           </Card>
         </motion.div>
       </div>
+      {/* ---------------- FOOTER ---------------- */}
+      <footer className="border-t bg-green-100 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} All Rights Reserved. Powered by SaaScraft Studio (India) Pvt. Ltd.
+        </div>
+      </footer>
+      </>
     )
   }
 
   // Draw in progress - Spin Style
   if (isRunning) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 relative overflow-hidden">
+     <>
+      <Banner />
+     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
         {/* Logout button */}
         <Button
           onClick={handleLogout}
@@ -710,7 +754,7 @@ export default function LuckyDraw() {
               initial={{ y: -100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -100, opacity: 0 }}
-              className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50"
+              className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50"
             >
               <div className="relative">
                 {/* Glowing background - Green */}
@@ -905,13 +949,22 @@ export default function LuckyDraw() {
           </div>
         </div>
       </div>
+      {/* ---------------- FOOTER ---------------- */}
+      <footer className="border-t bg-green-100 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} All Rights Reserved. Powered by SaaScraft Studio (India) Pvt. Ltd.
+        </div>
+      </footer>
+      </>
     )
   }
 
   // Winner Reveal Screen - Premium Design with Green Theme
   if (winner) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 relative overflow-hidden">
+      <>
+      <Banner />
+     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
         {/* Logout button */}
         <Button
           onClick={handleLogout}
@@ -1067,6 +1120,13 @@ export default function LuckyDraw() {
           </Card>
         </motion.div>
       </div>
+       {/* ---------------- FOOTER ---------------- */}
+      <footer className="border-t bg-green-100 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} All Rights Reserved. Powered by SaaScraft Studio (India) Pvt. Ltd.
+        </div>
+      </footer>
+      </>
     )
   }
 
