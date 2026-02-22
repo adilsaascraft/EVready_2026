@@ -450,13 +450,6 @@ export default function LuckyDraw() {
           <Card className="bg-white/10 backdrop-blur-xl border-2 border-green-400/30 shadow-2xl shadow-green-500/20">
             <CardContent className="p-4 space-y-1">
               <div className="text-center">
-                {/* <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-16 h-16 mx-auto mb-4"
-                >
-                  <Trophy className="w-full h-full text-green-400" />
-                </motion.div> */}
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                   Lucky Draw Application
                 </h2>
