@@ -432,7 +432,6 @@ export default function LuckyDraw() {
       sizes="100vw"
       className="w-full h-auto object-cover"
     />
-    <div className="absolute inset-0 bg-black/40" />
   </div>
 )
 
@@ -787,7 +786,15 @@ export default function LuckyDraw() {
 
         {/* Main Spin Display */}
         <div className="relative z-10 min-h-screen flex items-center justify-center">
-          <div className="w-full max-w-6xl px-4">
+         <div className="
+  w-[360px]       /* mobile */
+  sm:w-[540px]    /* small devices */
+  md:w-[768px]    /* tablets */
+  lg:w-[1024px]   /* laptops */
+  xl:w-[1200px]   /* large screens */
+  mx-auto
+  px-4
+">
            
             {/* Speed indicator */}
             <motion.div 
@@ -827,7 +834,20 @@ export default function LuckyDraw() {
               />
 
               {/* Main spin card */}
-              <Card className="relative bg-black/40 backdrop-blur-2xl border-4 border-green-400/50 shadow-2xl shadow-green-500/30 overflow-hidden">
+              <Card className="
+  w-[320px]
+  sm:w-[500px]
+  md:w-[700px]
+  lg:w-[900px]
+  xl:w-[1000px]
+  mx-auto
+  relative
+  bg-black/40
+  backdrop-blur-2xl
+  border-4 border-green-400/50
+  shadow-2xl shadow-green-500/30
+  overflow-hidden
+">
                 <CardContent className="p-16">
                   {/* Decorative side icons */}
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 space-y-4">
@@ -1065,19 +1085,6 @@ export default function LuckyDraw() {
 
               {/* Winner text */}
               <div className="text-center space-y-4">
-                <motion.h1 
-                  animate={{ 
-                    textShadow: [
-  '0 0 8px rgba(255,120,0,0.7)',
-  '0 0 25px rgba(255,100,0,1)',
-  '0 0 8px rgba(255,120,0,0.7)'
-]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400 bg-clip-text text-transparent"
-                >
-                  EVready Expo 2026 Karnataka
-                </motion.h1>
                 <motion.h2 
                   animate={{ 
                     textShadow: [
