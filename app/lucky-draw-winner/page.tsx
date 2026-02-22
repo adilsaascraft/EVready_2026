@@ -737,19 +737,6 @@ export default function LuckyDraw() {
             className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,0,0.15),transparent_70%)]"
           />
 
-          {/* Premium glow border - Green */}
-          <motion.div
-            animate={{
-              boxShadow: [
-                `0 0 ${20 * glowIntensity}px rgba(0,255,0,${0.5 * glowIntensity})`,
-                `0 0 ${40 * glowIntensity}px rgba(0,255,0,${0.8 * glowIntensity})`,
-                `0 0 ${20 * glowIntensity}px rgba(0,255,0,${0.5 * glowIntensity})`,
-              ],
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute inset-0 pointer-events-none border-4 border-green-400/30"
-          />
-
           {/* Countdown Timer - Top Center with Green Theme */}
           <AnimatePresence>
             {showCountdown && (
