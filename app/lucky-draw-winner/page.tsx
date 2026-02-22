@@ -440,7 +440,7 @@ export default function LuckyDraw() {
     return (
       <>
       <Banner />
-     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
+     <div className="bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -448,17 +448,17 @@ export default function LuckyDraw() {
           className="w-full max-w-md"
         >
           <Card className="bg-white/10 backdrop-blur-xl border-2 border-green-400/30 shadow-2xl shadow-green-500/20">
-            <CardContent className="p-8 space-y-6">
-              <div className="text-center space-y-2">
-                <motion.div
+            <CardContent className="p-4 space-y-1">
+              <div className="text-center">
+                {/* <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                   className="w-16 h-16 mx-auto mb-4"
                 >
                   <Trophy className="w-full h-full text-green-400" />
-                </motion.div>
+                </motion.div> */}
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  EVReady Expo 2026
+                  Lucky Draw Application
                 </h2>
                 <p className="text-green-300/60">Admin Portal</p>
               </div>
@@ -700,279 +700,306 @@ export default function LuckyDraw() {
   // Draw in progress - Spin Style
   if (isRunning) {
     return (
-     <>
-      <Banner />
-     <div className="min-h-[calc(100vh-80px)] bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
-        {/* Logout button */}
-        <Button
-          onClick={handleLogout}
-          variant="ghost"
-          className="absolute top-4 right-4 z-50 text-green-300 hover:text-green-400"
-        >
-          <LogOut className="w-4 h-4 mr-2" />
-          Logout
-        </Button>
+      <>
+        <Banner />
+        <div className="bg-gradient-to-br from-green-950 via-emerald-900 to-green-950 flex items-center justify-center p-4">
+          {/* Logout button */}
+          <Button
+            onClick={handleLogout}
+            variant="ghost"
+            className="absolute top-4 right-4 z-50 text-green-300 hover:text-green-400"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </Button>
 
-        {/* Mute button */}
-        <Button
-          onClick={() => setIsMuted(!isMuted)}
-          variant="ghost"
-          size="icon"
-          className="absolute top-4 left-4 z-50 text-green-300 hover:text-green-400"
-        >
-          {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-        </Button>
+          {/* Mute button */}
+          <Button
+            onClick={() => setIsMuted(!isMuted)}
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 left-4 z-50 text-green-300 hover:text-green-400"
+          >
+            {isMuted ? (
+              <VolumeX className="w-5 h-5" />
+            ) : (
+              <Volume2 className="w-5 h-5" />
+            )}
+          </Button>
 
-        {/* Animated background effects - Green theme */}
-        <motion.div 
-          animate={{ 
-            opacity: [0.3, 0.6, 0.3],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,0,0.15),transparent_70%)]"
-        />
-        
-        {/* Premium glow border - Green */}
-        <motion.div 
-          animate={{ 
-            boxShadow: [
-              `0 0 ${20 * glowIntensity}px rgba(0,255,0,${0.5 * glowIntensity})`,
-              `0 0 ${40 * glowIntensity}px rgba(0,255,0,${0.8 * glowIntensity})`,
-              `0 0 ${20 * glowIntensity}px rgba(0,255,0,${0.5 * glowIntensity})`
-            ]
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute inset-0 pointer-events-none border-4 border-green-400/30"
-        />
+          {/* Animated background effects - Green theme */}
+          <motion.div
+            animate={{
+              opacity: [0.3, 0.6, 0.3],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,0,0.15),transparent_70%)]"
+          />
 
-        {/* Countdown Timer - Top Center with Green Theme */}
-        <AnimatePresence>
-          {showCountdown && (
-            <motion.div
-              initial={{ y: -100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -100, opacity: 0 }}
-              className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50"
-            >
-              <div className="relative">
-                {/* Glowing background - Green */}
-                <motion.div
-                  animate={{ 
-                    scale: [1, 1.2, 1],
-                    opacity: [0.5, 0.8, 0.5]
-                  }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                  className="absolute inset-0 bg-green-400 rounded-full blur-xl"
-                />
-                
-                {/* Timer display */}
-                <div className="relative bg-black/50 backdrop-blur-xl border-4 border-green-400 rounded-full px-8 py-4">
-                  <motion.span 
-                    animate={{ 
-                      scale: [1, 1.1, 1],
-                      color: ['#00ff00', '#adff2f', '#00ff00']
+          {/* Premium glow border - Green */}
+          <motion.div
+            animate={{
+              boxShadow: [
+                `0 0 ${20 * glowIntensity}px rgba(0,255,0,${0.5 * glowIntensity})`,
+                `0 0 ${40 * glowIntensity}px rgba(0,255,0,${0.8 * glowIntensity})`,
+                `0 0 ${20 * glowIntensity}px rgba(0,255,0,${0.5 * glowIntensity})`,
+              ],
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute inset-0 pointer-events-none border-4 border-green-400/30"
+          />
+
+          {/* Countdown Timer - Top Center with Green Theme */}
+          <AnimatePresence>
+            {showCountdown && (
+              <motion.div
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -100, opacity: 0 }}
+                className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50"
+              >
+                <div className="relative">
+                  {/* Glowing background - Green */}
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 0.8, 0.5],
                     }}
                     transition={{ duration: 1, repeat: Infinity }}
-                    className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent"
-                  >
-                    {countdown}s
-                  </motion.span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                    className="absolute inset-0 bg-green-400 rounded-full blur-xl"
+                  />
 
-        {/* Main Spin Display */}
-        <div className="relative z-10 min-h-screen flex items-center justify-center">
-         <div className="
-  w-[360px]       /* mobile */
-  sm:w-[540px]    /* small devices */
-  md:w-[768px]    /* tablets */
-  lg:w-[1024px]   /* laptops */
-  xl:w-[1200px]   /* large screens */
+                  {/* Timer display */}
+                  <div className="relative bg-black/50 backdrop-blur-xl border-4 border-green-400 rounded-full px-8 py-4">
+                    <motion.span
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        color: ['#00ff00', '#adff2f', '#00ff00'],
+                      }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="text-5xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent"
+                    >
+                      {countdown}s
+                    </motion.span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Main Spin Display */}
+          <div className="relative z-10 min-h-screen flex items-center justify-center">
+            <div
+              className="
+  max-w-[380px]
+  sm:max-w-[600px]
+  md:max-w-[850px]
+  lg:max-w-[1100px]
+  xl:max-w-[1300px]
   mx-auto
   px-4
-">
-           
-            {/* Speed indicator */}
-            <motion.div 
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-center mb-8"
+"
             >
-              <motion.div 
-                className="h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full mx-auto mt-2"
-                style={{ width: `${(spinSpeed / SPIN_SPEED) * 100}%` }}
-              />
-            </motion.div>
-
-            {/* Main spin wheel/card */}
-            <motion.div
-              animate={{ 
-                scale: [1, 1.02, 1],
-                rotate: [0, 1, -1, 0]
-              }}
-              transition={{ 
-                duration: 0.5, 
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className="relative"
-            >
-              {/* Glowing background */}
+              {/* Speed indicator */}
               <motion.div
-                animate={{ 
-                  scale: [1, 1.1, 1],
-                  opacity: [0.3, 0.6, 0.3]
-                }}
+                animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="absolute inset-0 bg-green-400 rounded-3xl blur-3xl"
-              />
+                className="text-center mb-8"
+              >
+                <motion.div
+                  className="h-1 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full mx-auto mt-2"
+                  style={{ width: `${(spinSpeed / SPIN_SPEED) * 100}%` }}
+                />
+              </motion.div>
 
-              {/* Main spin card */}
-              <Card className="
-  w-[360px]
-  sm:w-[500px]
-  md:w-[900px]
-  lg:w-[1200px]
-  xl:w-[1400px]
-  mx-auto
-  relative
-  bg-black/40
-  backdrop-blur-2xl
-  border-4 border-green-400/50
-  shadow-2xl shadow-green-500/30
-  overflow-hidden
-">
-                <CardContent className="p-16">
-                  {/* Decorative side icons */}
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 space-y-4">
-                    {[Leaf, Zap, Flower2].map((Icon, i) => (
-                      <motion.div
-                        key={i}
-                        animate={{ 
-                          rotate: 360,
-                          scale: [1, 1.2, 1]
-                        }}
-                        transition={{ 
-                          duration: 3, 
-                          delay: i * 0.3,
-                          repeat: Infinity 
-                        }}
-                      >
-                        <Icon className="w-8 h-8 text-green-400/30" />
-                      </motion.div>
-                    ))}
-                  </div>
+              {/* Main spin wheel/card */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.02, 1],
+                  rotate: [0, 1, -1, 0],
+                }}
+                transition={{
+                  duration: 0.5,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+                className="relative"
+              >
+                {/* Glowing background */}
+                <motion.div
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute inset-0 bg-green-400 rounded-3xl blur-3xl"
+                />
 
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 space-y-4">
-                    {[Battery, Wind, Sparkles].map((Icon, i) => (
-                      <motion.div
-                        key={i}
-                        animate={{ 
-                          rotate: -360,
-                          scale: [1, 1.2, 1]
-                        }}
-                        transition={{ 
-                          duration: 3, 
-                          delay: i * 0.3,
-                          repeat: Infinity 
-                        }}
-                      >
-                        <Icon className="w-8 h-8 text-green-400/30" />
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Current participant display */}
-                  <div className="text-center space-y-6">
-                    {/* Floating icons background */}
-                    <div className="flex justify-center gap-4 mb-8">
-                      {[Zap, Leaf, Sparkles].map((Icon, i) => (
+                {/* Main spin card */}
+                <Card
+                  className="
+    w-[380px]
+    sm:w-[600px]
+    lg:w-[1000px]
+    xl:w-[1200px]
+    mx-auto
+    relative
+    bg-black/40
+    backdrop-blur-2xl
+    border border-green-400/40
+    shadow-2xl shadow-green-500/30
+    rounded-3xl
+    overflow-hidden
+  "
+                >
+                  <CardContent className="p-16">
+                    {/* Decorative side icons */}
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 space-y-4">
+                      {[Leaf, Zap, Flower2].map((Icon, i) => (
                         <motion.div
                           key={i}
-                          animate={{ 
-                            y: [0, -10, 0],
-                            rotate: [0, 10, -10, 0]
+                          animate={{
+                            rotate: 360,
+                            scale: [1, 1.2, 1],
                           }}
-                          transition={{ 
-                            duration: 2, 
-                            delay: i * 0.2,
-                            repeat: Infinity 
+                          transition={{
+                            duration: 3,
+                            delay: i * 0.3,
+                            repeat: Infinity,
                           }}
                         >
-                          <Icon className="w-12 h-12 text-green-400" />
+                          <Icon className="w-8 h-8 text-green-400/30" />
                         </motion.div>
                       ))}
                     </div>
 
-                    {/* Current spinning name */}
-                    <motion.div
-                      key={currentIndex}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.1 }}
-                    >
-                      <h2 className="text-5xl md:text-8xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-green-400 bg-clip-text text-transparent">
-                        {currentParticipant?.name}
-                      </h2>
-                    </motion.div>
-
-                    {/* Spinning indicator */}
-                    <motion.div 
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      className="flex justify-center gap-2 mt-8"
-                    >
-                      {[1, 2, 3].map((_, i) => (
-                        <div
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 space-y-4">
+                      {[Battery, Wind, Sparkles].map((Icon, i) => (
+                        <motion.div
                           key={i}
-                          className="w-3 h-3 rounded-full bg-green-400"
-                          style={{ opacity: 0.3 + (spinSpeed / SPIN_SPEED) * 0.7 }}
-                        />
+                          animate={{
+                            rotate: -360,
+                            scale: [1, 1.2, 1],
+                          }}
+                          transition={{
+                            duration: 3,
+                            delay: i * 0.3,
+                            repeat: Infinity,
+                          }}
+                        >
+                          <Icon className="w-8 h-8 text-green-400/30" />
+                        </motion.div>
                       ))}
-                    </motion.div>
+                    </div>
 
-                    {/* Info text */}
-                    <p className="text-green-300/40 text-lg mt-8">
-                      {participants.length} participants • spinning at {Math.round(spinSpeed)}x
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                    {/* Current participant display */}
+                    <div className="text-center space-y-6">
+                      {/* Floating icons background */}
+                      <div className="flex justify-center gap-4 mb-8">
+                        {[Zap, Leaf, Sparkles].map((Icon, i) => (
+                          <motion.div
+                            key={i}
+                            animate={{
+                              y: [0, -10, 0],
+                              rotate: [0, 10, -10, 0],
+                            }}
+                            transition={{
+                              duration: 2,
+                              delay: i * 0.2,
+                              repeat: Infinity,
+                            }}
+                          >
+                            <Icon className="w-12 h-12 text-green-400" />
+                          </motion.div>
+                        ))}
+                      </div>
 
-            {/* Bottom decorative icons */}
-            <div className="flex justify-center gap-8 mt-12">
-              {[Leaf, Battery, Wind, Flower2, Sparkles].map((Icon, i) => (
-                <motion.div
-                  key={i}
-                  animate={{ 
-                    y: [0, -5, 0],
-                    rotate: [0, 5, -5, 0]
-                  }}
-                  transition={{ 
-                    duration: 2, 
-                    delay: i * 0.1,
-                    repeat: Infinity 
-                  }}
-                >
-                  <Icon className="w-6 h-6 text-green-400/40" />
-                </motion.div>
-              ))}
+                      {/* Current spinning name */}
+                      <motion.div
+                        key={currentIndex}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.1 }}
+                      >
+                        <h2
+                          className="
+    w-full
+    break-words
+    text-center
+    text-3xl
+    sm:text-5xl
+    lg:text-7xl
+    font-bold
+    bg-gradient-to-r from-green-400 via-emerald-400 to-green-400
+    bg-clip-text
+    text-transparent
+  "
+                        >
+                          {currentParticipant?.name}
+                        </h2>
+                      </motion.div>
+
+                      {/* Spinning indicator */}
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: 'linear',
+                        }}
+                        className="flex justify-center gap-2 mt-8"
+                      >
+                        {[1, 2, 3].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-3 h-3 rounded-full bg-green-400"
+                            style={{
+                              opacity: 0.3 + (spinSpeed / SPIN_SPEED) * 0.7,
+                            }}
+                          />
+                        ))}
+                      </motion.div>
+
+                      {/* Info text */}
+                      <p className="text-green-300/40 text-lg mt-8">
+                        {participants.length} participants
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Bottom decorative icons */}
+              <div className="flex justify-center gap-8 mt-12">
+                {[Leaf, Battery, Wind, Flower2, Sparkles].map((Icon, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{
+                      y: [0, -5, 0],
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      delay: i * 0.1,
+                      repeat: Infinity,
+                    }}
+                  >
+                    <Icon className="w-6 h-6 text-green-400/40" />
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* ---------------- FOOTER ---------------- */}
-      <footer className="border-t bg-green-100 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} All Rights Reserved. Powered by SaaScraft Studio (India) Pvt. Ltd.
-        </div>
-      </footer>
+        {/* ---------------- FOOTER ---------------- */}
+        <footer className="border-t bg-green-100 backdrop-blur">
+          <div className="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-muted-foreground">
+            © {new Date().getFullYear()} All Rights Reserved. Powered by
+            SaaScraft Studio (India) Pvt. Ltd.
+          </div>
+        </footer>
       </>
     )
   }
