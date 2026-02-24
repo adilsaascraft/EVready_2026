@@ -65,42 +65,48 @@ export default function ZebraGateScanner() {
   // Flash Effect
   // ======================
   const triggerFlash = (type: ScanStatus) => {
-    setStatus(type)
+  setStatus(null) // clear first to prevent stacking
 
-    setTimeout(() => {
-      setStatus(null)
-    }, 800)
-  }
+  requestAnimationFrame(() => {
+    setStatus(type)
+  })
+
+  setTimeout(() => {
+    setStatus(null)
+  }, 900)
+}
 
   // ======================
   // API Call
   // ======================
   const markAttendance = async (regNum: string) => {
-    if (!activeDay || processing) return
+  if (!activeDay || processing) return
 
-    setProcessing(true)
+  setProcessing(true)
+  setStatus(null) // clear any previous flash immediately
 
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}${DAY_API[activeDay]}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ regNum }),
-        },
-      )
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}${DAY_API[activeDay]}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ regNum }),
+      },
+    )
 
-      const result = await res.json()
-      if (!res.ok) throw new Error(result.message)
+    const result = await res.json()
 
-      triggerFlash('success')
-      mutate()
-    } catch {
-      triggerFlash('error')
-    } finally {
-      setProcessing(false)
-    }
+    if (!res.ok) throw new Error(result.message)
+
+    triggerFlash('success')
+    mutate()
+  } catch {
+    triggerFlash('error')
+  } finally {
+    setProcessing(false)
   }
+}
 
   // ======================
   // Zebra Handler
