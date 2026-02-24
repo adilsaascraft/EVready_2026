@@ -1,7 +1,3 @@
-//zebra configured file
-
-
-
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
@@ -28,7 +24,6 @@ export default function ZebraGateScanner() {
   const [activeDay, setActiveDay] = useState<ScanDay | null>(null)
   const [status, setStatus] = useState<ScanStatus>(null)
   const [processing, setProcessing] = useState(false)
-  const [scanValue, setScanValue] = useState('')
 
   // ======================
   // Live Count
@@ -43,105 +38,80 @@ export default function ZebraGateScanner() {
   const count = data?.count ?? 0
 
   // ======================
-  // Keep Input Focused
+  // Always Focus Input
   // ======================
   useEffect(() => {
     const interval = setInterval(() => {
       inputRef.current?.focus()
-    }, 200)
+    }, 300)
 
     return () => clearInterval(interval)
   }, [])
 
   // ======================
-  // Reset on Day Change
+  // Reset On Day Change
   // ======================
   useEffect(() => {
-    setScanValue('')
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
     setStatus(null)
   }, [activeDay])
 
   // ======================
-  // Flash Effect
-  // ======================
-  const triggerFlash = (type: ScanStatus) => {
-  setStatus(null) // clear first to prevent stacking
-
-  requestAnimationFrame(() => {
-    setStatus(type)
-  })
-
-  setTimeout(() => {
-    setStatus(null)
-  }, 900)
-}
-
-  // ======================
-  // API Call
-  // ======================
-  const markAttendance = async (regNum: string) => {
-  if (!activeDay || processing) return
-
-  setProcessing(true)
-  setStatus(null) // clear any previous flash immediately
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}${DAY_API[activeDay]}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ regNum }),
-      },
-    )
-
-    const result = await res.json()
-
-    if (!res.ok) throw new Error(result.message)
-
-    triggerFlash('success')
-    mutate()
-  } catch {
-    triggerFlash('error')
-  } finally {
-    setProcessing(false)
-  }
-}
-
-  // ======================
-  // Zebra Handler
+  // Zebra Scan Handler
   // ======================
   const handleScan = async (
     e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    if (e.key === 'Enter') {
-      const value = scanValue.trim()
+    if (e.key !== 'Enter') return
+    if (!activeDay) return
+    if (processing) return
 
-      if (!value) return
+    const input = inputRef.current
+    if (!input) return
 
-      setScanValue('')
-      await markAttendance(value)
+    const value = input.value.trim()
+
+    // Clear immediately
+    input.value = ''
+
+    if (!value) return
+
+    setProcessing(true)
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}${DAY_API[activeDay]}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ regNum: value }),
+        },
+      )
+
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.message)
+
+      setStatus('success')
+      mutate()
+    } catch {
+      setStatus('error')
+    } finally {
+      setTimeout(() => {
+        setStatus(null)
+        setProcessing(false)
+      }, 900)
     }
   }
 
   return (
     <div
       className={`min-h-screen flex flex-col items-center justify-center px-6 transition-colors duration-75
-      ${status === 'success' ? 'bg-green-600' : ''}
-      ${status === 'error' ? 'bg-red-600' : ''}
-    `}
+        ${status === 'success' ? 'bg-green-600' : ''}
+        ${status === 'error' ? 'bg-red-600' : ''}
+      `}
     >
-      {/* Hidden Scanner Input */}
-      <input
-        ref={inputRef}
-        value={scanValue}
-        onChange={(e) => setScanValue(e.target.value)}
-        onKeyDown={handleScan}
-        autoFocus
-        inputMode="none"
-        className="absolute opacity-0 pointer-events-none"
-      />
-
       {/* Day Selection */}
       <div className="flex gap-4 mb-10">
         {(['day1', 'day2', 'day3'] as ScanDay[]).map((day) => (
@@ -166,27 +136,35 @@ export default function ZebraGateScanner() {
         ))}
       </div>
 
-      {/* Scanner Display */}
+      {/* Visible Premium Input */}
       {activeDay && (
-        <div className="text-center space-y-6">
-          <h1 className="text-4xl font-bold tracking-wide">
+        <div className="w-full max-w-md space-y-6 text-center">
+          <h1 className="text-3xl font-bold tracking-wide">
             {activeDay.toUpperCase()} SCANNING
           </h1>
 
+          <input
+            ref={inputRef}
+            onKeyDown={handleScan}
+            autoFocus
+            inputMode="none"
+            placeholder="Scan badge QR..."
+            className="w-full rounded-xl border-2 border-gray-300 px-5 py-4 text-xl text-center font-semibold tracking-widest focus:outline-none focus:ring-4 focus:ring-blue-400"
+          />
+
+          {/* Feedback Icon */}
           {status === 'success' && (
-            <CheckCircle2 size={140} className="text-white mx-auto" />
+            <CheckCircle2 size={120} className="text-white mx-auto" />
           )}
 
           {status === 'error' && (
-            <XCircle size={140} className="text-white mx-auto" />
+            <XCircle size={120} className="text-white mx-auto" />
           )}
         </div>
       )}
     </div>
   )
 }
-
-
 
 // old code with mobile camera scanner 
 
